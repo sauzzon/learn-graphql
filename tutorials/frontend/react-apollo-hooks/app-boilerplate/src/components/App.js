@@ -18,6 +18,7 @@ import {
 import useAccessToken from "../hooks/useAccessToken";
 
 const createApolloClient = (authToken) => {
+  //console.log("auth token found", authToken);
   return new ApolloClient({
     link: new HttpLink({
       uri: "https://hasura.io/learn/graphql",
