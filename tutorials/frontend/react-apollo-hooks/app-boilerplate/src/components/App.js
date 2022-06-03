@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import Header from "./Header";
@@ -14,6 +15,8 @@ import {
   HttpLink,
 } from "@apollo/client";
 
+import useAccessToken from "../hooks/useAccessToken";
+
 const createApolloClient = (authToken) => {
   return new ApolloClient({
     link: new HttpLink({
@@ -26,11 +29,10 @@ const createApolloClient = (authToken) => {
   });
 };
 
-import useAccessToken from "../hooks/useAccessToken";
-
 const App = () => {
   const idToken = useAccessToken();
   const { loading, logout } = useAuth0();
+  const [client] = useState(createApolloClient(idToken));
 
   if (loading) {
     return <div>Loading...</div>;
@@ -39,7 +41,7 @@ const App = () => {
   if (!idToken) {
     return <Login />;
   }
-  const [client] = useState(createApolloClient(idToken));
+
   return (
     <ApolloProvider client={client}>
       <div>
